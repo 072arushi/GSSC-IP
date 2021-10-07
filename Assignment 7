@@ -1,0 +1,56 @@
+7 october'21
+
+Ans 1
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int ans = 0, ii = -1; 
+        unordered_map<int, int> freq; 
+        queue<int> q; 
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            freq[nums[i]]++; 
+            q.push(i); 
+            if (freq.size() > k) {
+                ii = q.front(); q.pop(); 
+                freq.erase(nums[ii]); 
+            }
+            
+            while (freq[nums[q.front()]] > 1) {
+                int k = q.front(); q.pop(); 
+                freq[nums[k]]--; 
+            }
+            
+            if (freq.size() == k) ans += q.front() - ii; 
+        }
+        return ans; 
+    }
+};
+
+Ans 2
+Di runtime exceeded in this question.
+Please help!!
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int len=nums.size();
+        if(len==0 || len<3) 
+            return {};
+        set<vector<int>> s; 
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<len-2;i++){
+            for(int j=i+1;j<len-1;j++){
+                for(int k=j+1;k<len;k++){
+                    if(nums[i]+nums[j]+nums[k]==0){
+                        s.insert({nums[i],nums[j],nums[k]});
+                    }
+                }
+            }
+        }
+        vector<vector<int>> ans(s.begin(),s.end());
+        return ans;
+    }
+};
+   
+Ans 3
+This link isn't opening
