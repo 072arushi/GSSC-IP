@@ -1,0 +1,104 @@
+8 October'21
+
+Ans 1
+class Solution {
+public:
+    int shortestSubarray(vector<int>& A, int K) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int,int>> > pq;
+        int sum = 0;
+        int ans = INT_MAX;
+        for( int i = 0; i<A.size(); i++){
+            sum += A[i];
+            if( sum >= K ){
+                ans = min(ans, i+1);
+            }
+            while( pq.size() && sum - pq.top().first >= K ){
+                auto &p = pq.top();
+                ans = min(ans, i-p.second);
+                pq.pop();
+            }
+            pq.push({sum, i});
+        }
+        return ans == INT_MAX?-1:ans;
+    }
+};
+
+Ans 2
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int l = 0, r = 0, n = nums.size(), sum = 0, len = INT_MAX;
+        while (r < n) {
+            sum += nums[r++];
+            while (sum >= s) {
+                len = min(len, r - l);
+                sum -= nums[l++];
+            }
+        }
+        return len == INT_MAX ? 0 : len;
+    }
+};
+
+Ans 3
+class Solution
+{
+	public:
+		vector<int> maxSlidingWindow(vector<int> &nums, int k)
+		{
+			int i, j, n = nums.size(), wins;
+			wins = n - k + 1;                        
+			vector<int> lft(n), rgt(n);            
+
+			for (i = 0; i < n; i++)
+			{
+				lft[i] = nums[i];
+				if (i % k !=0) 
+					lft[i] = max(lft[i - 1], lft[i]);
+			}
+			rgt[n - 1] = nums[n - 1];
+			for (i = n - 2; i >= 0; i--)
+			{
+				rgt[i] = nums[i];
+				if (i % k != (k - 1))
+					rgt[i] = max(rgt[i], rgt[i + 1]);
+			}
+			vector<int> ans;
+			for (i = 0; i < wins; i++)
+				ans.push_back(max(rgt[i], lft[i + k - 1]));
+			return ans;
+		}
+};
+
+Ans 4
+class Solution {
+public:
+    int getBouq(vector<int>& bloomDay,int day,int k)	
+    {
+        int result=0,count=0;
+        for(int i=0;i<bloomDay.size();i++)
+        {
+            if(bloomDay[i]<=day)
+                count++;
+            else
+                count=0;
+            if(count==k)    
+                result++,count=0;
+        }
+        return result;
+    }
+    int minDays(vector<int>& bloomDay, int m, int k) 
+    {
+        auto p=minmax_element(bloomDay.begin(),bloomDay.end());
+        int j=*p.second,i=*p.first;
+        int mid;
+        while(i<j)				
+        {
+            mid=(i+j)>>1;
+            if(getBouq(bloomDay,mid,k)<m)
+                i=mid+1;
+            else
+                j=mid;
+        }
+        return getBouq(bloomDay,i,k)>=m?i:-1;		
+    }
+};
