@@ -1,0 +1,95 @@
+10 October'21
+Ans 1
+void helper(int input[], int N, int sum, vector<int> &ans)
+   {
+       if(N==0)
+       {
+           ans.push_back(sum);
+           return;
+       }
+       helper(input+1,N-1,sum+input[0],ans);
+       helper(input+1,N-1,sum,ans);
+   }
+   vector<int> subsetSums(vector<int> arr, int N)
+   {
+       int input[1000];
+       for(int i=0;i<N;i++)
+       {
+           input[i]=arr[i];
+       }
+       vector<int> ans;
+       helper(input,N,0,ans);
+       sort(ans.begin(),ans.end());
+       return ans;
+   }
+   
+   Ans 2
+   class Solution {
+public:
+    vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        vector<vector<int> > totalset = {{}};
+        sort(S.begin(),S.end());
+        for(int i=0; i<S.size();){
+            int count = 0; 
+            while(count + i<S.size() && S[count+i]==S[i])  count++;
+            int previousN = totalset.size();
+            for(int k=0; k<previousN; k++){
+                vector<int> instance = totalset[k];
+                for(int j=0; j<count; j++){
+                    instance.push_back(S[i]);
+                    totalset.push_back(instance);
+                }
+            }
+            i += count;
+        }
+        return totalset;
+        }
+};
+
+Ans 3
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& nums, int target)
+    {
+        vector <vector <vector <int>>> dp(target+1);
+        dp[0]={{}};
+        for(int &i:nums)
+        {
+            for(int j=i;j<=target;j++)
+            {
+                for(auto v:dp[j-i])
+                {
+                    v.push_back(i);
+                    dp[j].push_back(v);
+                }
+            }
+        }
+        return dp[target];
+    }
+};
+
+Ans 4
+class Solution {
+public:
+    void helper(int index, int target, vector<int>&candidates, vector<vector<int>>&ans, vector<int>&ds){
+        if(target == 0){
+            ans.push_back(ds);
+            return;
+        }
+        for(int i = index; i< candidates.size(); i++){
+            if(candidates[i] > target) break; 
+            if(i  > index && candidates[i] == candidates[i-1])
+                continue;
+            ds.push_back(candidates[i]);
+            helper(i+1, target- candidates[i], candidates, ans, ds); //call for next  index element
+            ds.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());//sort the given candidates vector 
+        vector<vector<int>>ans;
+        vector<int>ds;
+        helper(0, target, candidates, ans, ds);
+        return ans;
+    }
+};
