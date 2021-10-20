@@ -1,0 +1,65 @@
+11 October'21
+
+Ans 1
+class Solution {
+public:
+    void in(TreeNode* root, vector<int> &v){
+        if(root==NULL){
+            return;
+        }
+        else{
+            in(root->left,v);
+            v.push_back(root->val);
+            in(root->right,v);
+        }
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>v;
+        in(root,v);
+        return v;
+    }
+};
+
+Ans 2
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(p == NULL &&  q== NULL) return true;
+        if(p == NULL ||  q== NULL) return false;
+        if(p->val != q->val) return false;
+        return isSameTree(p->right, q->right) && isSameTree(p->left, q->left) ;
+    }
+};
+
+Ans 3
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
+        if (!root) return true;
+        return helper(root->left, root->right);
+    }
+    
+    bool helper(TreeNode* p, TreeNode* q) {
+        if (!p && !q) {
+            return true;
+        } else if (!p || !q) {
+            return false;
+        }
+        
+        if (p->val != q->val) {
+            return false;
+        }
+        
+        return helper(p->left,q->right) && helper(p->right, q->left); 
+    }
+};
+
+Ans 4
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root==NULL)
+            return 0;
+        return (max(maxDepth(root->left), maxDepth(root->right))+1);
+    }
+};
