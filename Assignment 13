@@ -1,0 +1,105 @@
+13 october'21
+
+ans 1
+int diff;
+    int ans = INT_MAX;
+    int x = 100000000;
+    void helper(TreeNode* root) {
+        if (root == NULL ) return;
+        helper(root->left);
+        diff = abs(root->val - x);
+        ans = min(ans, diff);
+        x = root->val;
+        helper(root->right);
+    }
+    int getMinimumDifference(TreeNode* root) {
+        if (root == NULL) return 0;
+        helper(root);
+        return ans;
+    }
+}
+
+Ans 2
+class Solution {
+	public:
+int ans=0;
+int height(TreeNode* root)
+{
+    if(!root) return 0;
+    
+    int lHeight = height(root->left);
+    int rHeight = height(root->right);
+    
+    ans= max(ans, 1 + lHeight + rHeight);
+    return 1+ max( lHeight , rHeight);
+
+}
+int diameterOfBinaryTree(TreeNode* root) {
+    if(!root) return 0;
+    height(root);
+    return ans-1;
+}
+};
+
+ans 3
+class Solution {
+     public:
+        vector<vector<int>> levelOrder(TreeNode* root) {
+            if(root==NULL)
+               return {};
+           vector<vector<int>> ans; 
+            queue<TreeNode*> q;
+            q.push(root);
+            TreeNode *temp;
+            int len;
+            while(!q.empty()){
+               len=q.size();
+		       vector<int> v;
+               for(int i=0;i<len;i++){
+                    temp=q.front();
+                    q.pop();
+                    v.push_back(temp->val);
+
+                   if(temp->left) q.push(temp->left);
+                   if(temp->right) q.push(temp->right);
+                }
+		        ans.push_back(v);
+            }
+          return ans;
+        }
+     };
+     
+Ans 4
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) 
+    {
+        vector <vector<int>> v;
+        if(!root) // if root is null return
+            return v;
+        queue <TreeNode*> q;
+        q.push(root);
+        int count = 1; // we want reverse the list at alternate order
+        while(!q.empty())
+        {
+            int n = q.size();
+            vector <int> l;
+            
+            while(n--)
+            {
+                root=q.front();
+                q.pop();
+                l.push_back(root->val);
+                if(root->left)
+                    q.push(root->left);
+                if(root->right)
+                    q.push(root->right);
+            }
+            if(count%2==0) 
+                reverse(l.begin(),l.end());
+            v.push_back(l);
+            count++;
+        }
+        return v; 
+    }
+};
