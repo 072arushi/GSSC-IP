@@ -1,0 +1,84 @@
+12 October'21
+
+Ans 1
+class Solution {
+public:
+    int height(TreeNode* root) {
+        if (!root)
+            return 0;
+        int left = height(root->left);
+        int right = height(root->right);
+        return (left == -1 || right == -1 || abs(left-right) > 1) ? -1 : max(left, right)+1;
+    }
+    
+    bool isBalanced(TreeNode* root) {
+        return height(root) != -1;
+    }
+};
+
+Ans 2
+class Solution {
+public:
+    void preorderTraversalHelper(TreeNode* root, vector<int> &res) {
+	if(root)
+	{
+		res.push_back(root -> val);           
+
+		if(root -> left)
+			preorderTraversalHelper(root -> left, res);
+
+		if(root -> right)
+			preorderTraversalHelper(root -> right, res);
+	}
+return;
+}
+vector<int> preorderTraversal(TreeNode* root) 
+{   
+	vector<int> res;
+	preorderTraversalHelper(root, res) ;
+	return res;
+}
+};
+
+Ans 3
+class Solution {
+public:
+    void postorderTraversalHelper(TreeNode* root, vector<int> &res) {
+	if(root)
+	{
+		if(root -> left)
+			postorderTraversalHelper(root -> left, res);
+
+		if(root -> right)
+			postorderTraversalHelper(root -> right, res);
+        res.push_back(root -> val);     
+	}
+return;
+}
+vector<int> postorderTraversal(TreeNode* root) 
+{   
+	vector<int> res;
+	postorderTraversalHelper(root, res) ;
+	return res;
+}
+};
+
+Ans 4
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+         if(!root){
+            return NULL;
+        }
+        if(root->val==p->val || root->val==q->val)
+            return root;
+        if(root->val<max(p->val,q->val) && root->val>min(p->val,q->val)){
+            return root;
+        }
+        else if(root->val >max(p->val,q->val)){
+            return lowestCommonAncestor(root->left,p,q);
+        }
+        else
+            return lowestCommonAncestor(root->right,p,q);
+    }
+};
