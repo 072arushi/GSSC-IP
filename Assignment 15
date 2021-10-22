@@ -1,0 +1,24 @@
+15 october'21
+
+Ans 1
+bool isValidBST(TreeNode* root) {
+    return isValidBST(root, NULL, NULL);
+}
+
+bool isValidBST(TreeNode* root, TreeNode* minNode, TreeNode* maxNode) {
+    if(!root) return true;
+    if(minNode && root->val <= minNode->val || maxNode && root->val >= maxNode->val)
+        return false;
+    return isValidBST(root->left, minNode, root) && isValidBST(root->right, root, maxNode);
+}
+
+Ans 2
+int kthSmallest(TreeNode* root, int k) {
+    return find(root, k);
+}
+int find(TreeNode* root, int& k) {
+    if (root) {
+        int x = find(root->left, k);
+        return !k ? x : !--k ? root->val : find(root->right, k);
+    }
+}
